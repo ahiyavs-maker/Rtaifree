@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Garena TopUp Center</title>
+    
+    <!-- Modern Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- PREMIUM DESIGN CSS --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background-color: #f0f2f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* TOP RED BAR */
+        .sub-bar {
+            background: linear-gradient(90deg, #d32f2f, #b71c1c);
+            color: white;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 100;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sub-bar i { margin-right: 8px; font-size: 18px; animation: pulse 1.5s infinite; }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+
+        /* HEADER */
+        .header {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        .header-icon {
+            width: 45px; height: 45px;
+            background: linear-gradient(135deg, #00C6FF, #0072FF);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 24px; margin-right: 15px;
+            box-shadow: 0 4px 10px rgba(0, 114, 255, 0.3);
+        }
+        .header-text h2 { font-size: 18px; color: #2c3e50; font-weight: 700; }
+        .header-text p { font-size: 12px; color: #7f8c8d; font-weight: 500; }
+
+        /* MAIN AREA */
+        .container {
+            flex: 1;
+            padding: 0 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- STEP 1: UID --- */
+        #step-uid { 
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .uid-label { 
+            font-size: 14px; color: #34495e; font-weight: 600; 
+            margin-bottom: 10px; display: block; text-align: left;
+        }
+        
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        .input-wrapper i {
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            color: #bdc3c7; font-size: 18px;
+        }
+        .input-wrapper input {
+            width: 100%;
+            padding: 16px 16px 16px 45px;
+            border: 2px solid #ecf0f1;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            outline: none;
+            transition: 0.3s;
+            color: #2c3e50;
+        }
+        .input-wrapper input:focus {
+            border-color: #0072FF;
+            box-shadow: 0 0 15px rgba(0, 114, 255, 0.1);
+        }
+
+        /* COMMON BUTTON */
+        .btn-main {
+            background: linear-gradient(90deg, #00C6FF, #0072FF);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 114, 255, 0.3);
+            transition: 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-main:active { transform: scale(0.96); }
+
+        /* --- STEP 2: DIAMONDS --- */
+        #step-diamond { display: none; }
+
+        .player-strip {
+            background: rgba(0, 114, 255, 0.1);
+            color: #0072FF;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 114, 255, 0.2);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            transition: 0.3s;
+            border: 2px solid transparent;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        /* Bonus Ribbon */
+        .bonus-tag {
+            position: absolute;
+            top: 0; right: 0;
+            background: #FF9800;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-bottom-left-radius: 10px;
+        }
+
+        /* SVG DIAMOND ICON (Never Breaks) */
+        .dia-icon svg {
+            width: 60px; height: 60px;
+            margin: 10px 0;
+            filter: drop-shadow(0 5px 10px rgba(0, 198, 255, 0.4));
+            transition: 0.3s;
+        }
+
+        .card h3 { font-size: 22px; color: #2c3e50; font-weight: 800; margin-bottom: 5px; }
+        .price-badge {
+            display: inline-block;
+            background: #f0f2f5;
+            color: #555;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Active State */
+        .card.active {
+            border-color: #0072FF;
+            background: rgba(0, 114, 255, 0.03);
+            transform: translateY(-5px);
+        }
+        .card.active .dia-icon svg { transform: scale(1.1); }
+        .card.active .price-badge { background: #0072FF; color: white; }
+
+        /* --- FAKE PAYMENT --- */
+        #paymentPopup {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 200;
+            align-items: center; justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        .receipt {
+            background: white;
+            width: 85%; max-width: 350px;
+            padding: 30px; border-radius: 25px;
+            text-align: center;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .pay-amount { font-size: 30px; font-weight: 800; color: #2c3e50; margin: 15px 0; }
+        
+        /* Spinner */
+        .spinner {
+            width: 50px; height: 50px;
+            border: 5px solid #f3f3f3; border-top: 5px solid #0072FF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 0 auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* --- SUCCESS SCREEN --- */
+        #successScreen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            background: white;
+            padding: 30px;
+        }
+        .success-circle {
+            width: 100px; height: 100px;
+            background: #e8f5e9;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px;
+        }
+        .success-circle i { font-size: 50px; color: #2e7d32; }
+        
+        .timer-box {
+            background: #fff3e0; color: #f57c00;
+            padding: 10px 20px; border-radius: 10px;
+            font-weight: bold; font-size: 24px;
+            margin: 20px 0; border: 1px solid #ffe0b2;
+        }
+
+        .btn-back {
+            background: #34495e;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border:none; cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- TOP SUBSCRIBE BAR -->
+    <div class="sub-bar" onclick="window.open('https://youtube.com/@rtprogaming20?si=KiLurDjZ0n5Z14Hq', '_blank')">
+        <i class="fab fa-youtube"></i> Tap To Subscribe Channel
+    </div>
+
+    <!-- APP HEADER -->
+    <div class="header">
+        <div class="header-icon"><i class="fas fa-gamepad"></i></div>
+        <div class="header-text">
+            <h2>Garena TopUp</h2>
+            <p>Official Partner • Instant Delivery</p>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <!-- STEP 1: UID INPUT (Modern) -->
+        <div id="step-uid">
+            <h2 style="color:#2c3e50; margin-bottom:5px;">Player Login</h2>
+            <p style="color:#95a5a6; font-size:13px; margin-bottom:25px;">Enter your Character ID to start</p>
+            
+            <label class="uid-label">CHARACTER ID</label>
+            <div class="input-wrapper">
+                <i class="fas fa-user-circle"></i>
+                <input type="number" id="uidInput" placeholder="Enter ID (e.g. 123456)">
+            </div>
+
+            <button class="btn-main" onclick="verifyUid()">Login Now</button>
+            <div style="margin-top:20px; display:flex; justify-content:center; gap:15px; color:#bdc3c7;">
+                <i class="fab fa-cc-visa fa-lg"></i>
+                <i class="fab fa-cc-mastercard fa-lg"></i>
+                <i class="fab fa-google-pay fa-lg"></i>
+            </div>
+        </div>
+
+        <!-- STEP 2: DIAMOND SELECTION (With SVG Icons) -->
+        <div id="step-diamond">
+            
+            <div class="player-strip">
+                <span id="displayUid">ID: 000000</span>
+                <i class="fas fa-edit" onclick="location.reload()" style="cursor:pointer;"></i>
+            </div>
+
+            <h3 style="margin-bottom:15px; font-size:16px; color:#333;">Select Top-up Package</h3>
+            
+            <div class="grid">
+                
+                <!-- 500 CARD -->
+                <div class="card" onclick="selectPack(500, 400, this)">
+                    <div class="bonus-tag">+100% BONUS</div>
+                    <div class="dia-icon">
+                        <!-- INLINE SVG DIAMOND (NO IMAGE LINK) -->
+                        <svg viewBox="0 0 512 512">
+                            <path fill="#29B6F6" d="M168.3 493.5C178.6 507.2 194.2 512 211.3 512H300.7C317.8 512 333.4 507.2 343.7 493.5L485.7 304.1C493.1 294.2 493.3 280.9 486.2 270.8L347.3 72.8C335.7 56.3 316.7 48 296.5 48H215.5C195.3 48 176.3 56.3 164.7 72.8L25.8 270.8C18.7 280.9 18.9 294.2 26.3 304.1L168.3 493.5Z"/>
+                            <path fill="#0288D1" d="M128 288H384L320 448H192L128 288Z"/>
+                            <path fill="#B3E5FC" d="M128 288L192 128H320L384 288H128Z"/>
+                        </svg>
+                    </div>
+                    <h3>500</h3>
+                    <div class="price-badge">₹400</div>
+                </div>
+
+                <!-- 1000 CARD -->
+                <div class="card" onclick="selectPack(1000, 800, this)">
+                    <div class="bonus-tag">+100% BONUS</div>
+                    <div class="dia-icon">
+                        <svg viewBox="0 0 512 512">
+                            <path fill="#29B6F6" d="M168.3 493.5C178.6 507.2 194.2 512 211.3 512H300.7C317.8 512 333.4 507.2 343.7 493.5L485.7 304.1C493.1 294.2 493.3 280.9 486.2 270.8L347.3 72.8C335.7 56.3 316.7 48 296.5 48H215.5C195.3 48 176.3 56.3 164.7 72.8L25.8 270.8C18.7 280.9 18.9 294.2 26.3 304.1L168.3 493.5Z"/>
+                            <path fill="#0288D1" d="M128 288H384L320 448H192L128 288Z"/>
+                            <path fill="#B3E5FC" d="M128 288L192 128H320L384 288H128Z"/>
+                        </svg>
+                    </div>
+                    <h3>1000</h3>
+                    <div class="price-badge">₹800</div>
+                </div>
+
+                <!-- 1500 CARD -->
+                <div class="card" onclick="selectPack(1500, 1200, this)">
+                    <div class="bonus-tag">+100% BONUS</div>
+                    <div class="dia-icon">
+                        <svg viewBox="0 0 512 512">
+                            <path fill="#29B6F6" d="M168.3 493.5C178.6 507.2 194.2 512 211.3 512H300.7C317.8 512 333.4 507.2 343.7 493.5L485.7 304.1C493.1 294.2 493.3 280.9 486.2 270.8L347.3 72.8C335.7 56.3 316.7 48 296.5 48H215.5C195.3 48 176.3 56.3 164.7 72.8L25.8 270.8C18.7 280.9 18.9 294.2 26.3 304.1L168.3 493.5Z"/>
+                            <path fill="#0288D1" d="M128 288H384L320 448H192L128 288Z"/>
+                            <path fill="#B3E5FC" d="M128 288L192 128H320L384 288H128Z"/>
+                        </svg>
+                    </div>
+                    <h3>1500</h3>
+                    <div class="price-badge">₹1200</div>
+                </div>
+
+                <!-- 2000 CARD -->
+                <div class="card" onclick="selectPack(2000, 1600, this)">
+                    <div class="bonus-tag">+100% BONUS</div>
+                    <div class="dia-icon">
+                        <svg viewBox="0 0 512 512">
+                            <path fill="#29B6F6" d="M168.3 493.5C178.6 507.2 194.2 512 211.3 512H300.7C317.8 512 333.4 507.2 343.7 493.5L485.7 304.1C493.1 294.2 493.3 280.9 486.2 270.8L347.3 72.8C335.7 56.3 316.7 48 296.5 48H215.5C195.3 48 176.3 56.3 164.7 72.8L25.8 270.8C18.7 280.9 18.9 294.2 26.3 304.1L168.3 493.5Z"/>
+                            <path fill="#0288D1" d="M128 288H384L320 448H192L128 288Z"/>
+                            <path fill="#B3E5FC" d="M128 288L192 128H320L384 288H128Z"/>
+                        </svg>
+                    </div>
+                    <h3>2000</h3>
+                    <div class="price-badge">₹1600</div>
+                </div>
+            </div>
+
+            <button class="btn-main" onclick="initiatePayment()">Proceed To Checkout</button>
+        </div>
+
+    </div>
+
+    <!-- FAKE PAYMENT OVERLAY -->
+    <div id="paymentPopup">
+        <div class="receipt">
+            <div id="payLoader" class="spinner"></div>
+            <div id="paySuccessIcon" style="display:none; color:#00c853; font-size:60px; margin-bottom:15px;">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            
+            <h2 id="payAmount" class="pay-amount">₹0.00</h2>
+            <p id="payStatus" style="color:#7f8c8d; font-weight:500;">Connecting Secure Gateway...</p>
+            
+            <div style="margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
+                <p style="font-size:12px; color:#aaa;">Unified Payment Interface (UPI)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FINAL SUCCESS SCREEN -->
+    <div id="successScreen">
+        <div class="success-circle"><i class="fas fa-check"></i></div>
+        <h1 style="color:#2c3e50; font-size:26px;">Order Completed!</h1>
+        <p style="color:#7f8c8d; margin-top:8px;">Diamonds have been queued for transfer.</p>
+        
+        <div class="timer-box" id="timer">30:00</div>
+        <p style="font-size:12px; color:#bdc3c7;">Server Response ID: #GF-99283-X</p>
+
+        <!-- GO BACK BUTTON -->
+        <button class="btn-back" onclick="location.reload()">
+            <i class="fas fa-arrow-left"></i> GO BACK
+        </button>
+    </div>
+
+    <script>
+        // --- VOICE ENGINE ---
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            let msg = new SpeechSynthesisUtterance(text);
+            msg.pitch = 1.4; // Slightly feminine
+            msg.rate = 1.0;  // Clear speed
+            
+            let voices = window.speechSynthesis.getVoices();
+            let hindiVoice = voices.find(v => v.lang.includes('hi'));
+            if(hindiVoice) msg.voice = hindiVoice;
+            
+            window.speechSynthesis.speak(msg);
+        }
+        window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+
+        let selectedAmount = 0;
+        let selectedCost = 0;
+
+        // --- UID LOGIC ---
+        function verifyUid() {
+            let uid = document.getElementById('uidInput').value;
+            if(uid.length < 5) {
+                alert("Please enter a valid Player ID");
+                return;
+            }
+            
+            // UI Transition
+            document.getElementById('step-uid').style.display = 'none';
+            document.getElementById('step-diamond').style.display = 'block';
+            document.getElementById('displayUid').innerText = "PLAYER ID: " + uid;
+        }
+
+        // --- DIAMOND SELECTION ---
+        function selectPack(diamonds, cost, element) {
+            selectedAmount = diamonds;
+            selectedCost = cost;
+
+            // Highlight Logic
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            element.classList.add('active');
+
+            // Voice Logic
+            let text = "";
+            if(diamonds == 500) text = "Paanch sau diamond select kiya gaya hai";
+            else if(diamonds == 1000) text = "Ek hazaar diamond select kiya gaya hai";
+            else if(diamonds == 1500) text = "Pandrah sau diamond select kiya gaya hai";
+            else if(diamonds == 2000) text = "Do hazaar diamond select kiya gaya hai";
+            
+            speak(text);
+        }
+
+        // --- PAYMENT SIMULATION ---
+        function initiatePayment() {
+            if(selectedAmount === 0) {
+                alert("Please select a package first!");
+                return;
+            }
+
+            document.getElementById('paymentPopup').style.display = 'flex';
+            document.getElementById('payAmount').innerText = "₹" + selectedCost + ".00";
+            
+            speak("Payment process ho raha hai, kripya wait karein.");
+
+            // Realistic Fake Steps
+            setTimeout(() => {
+                document.getElementById('payStatus').innerText = "Verifying Bank Details...";
+            }, 1500);
+
+            setTimeout(() => {
+                document.getElementById('payLoader').style.display = 'none';
+                document.getElementById('paySuccessIcon').style.display = 'block';
+                document.getElementById('payStatus').innerText = "Payment Successful!";
+                document.getElementById('payStatus').style.color = "#00c853";
+                speak("Payment successful. Diamonds account mein bhej diye gaye hain.");
+            }, 3500);
+
+            setTimeout(() => {
+                document.getElementById('paymentPopup').style.display = 'none';
+                document.querySelector('.container').style.display = 'none';
+                document.querySelector('.header').style.display = 'none';
+                document.getElementById('successScreen').style.display = 'flex';
+                startTimer();
+            }, 5500);
+        }
+
+        // --- TIMER ---
+        function startTimer() {
+            let duration = 30 * 60; 
+            setInterval(() => {
+                let m = Math.floor(
